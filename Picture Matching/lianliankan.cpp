@@ -1,34 +1,31 @@
-// lianliankan.cpp : ¶¨Òå¿ØÖÆÌ¨Ó¦ÓÃ³ÌĞòµÄÈë¿Úµã¡£
-//
-
 #include "stdafx.h"
 #include <iostream>
 #include <fstream>
 
 using namespace std;
 
-int length, width, i, j, **mat, **sig;			//mat´æ´¢ÆåÅÌĞÅÏ¢£¬sig´æ´¢Â·¾¶ĞÅÏ¢
-int dx[4] = { 0,0,-1,1 }, dy[4] = { -1,1,0,0 };	//dx dy±íÊ¾ÉÏÏÂ×óÓÒÒÆ¶¯Ê±×ø±êµÄ±ä»¯
-int x2, y2;			//ÖÕµã×ø±ê
-bool flag = false;	//ÊÇ·ñÄÜÏàÁ¬
+int length, width, i, j, **mat, **sig;			//matå­˜å‚¨æ£‹ç›˜ä¿¡æ¯ï¼Œsigå­˜å‚¨è·¯å¾„ä¿¡æ¯
+int dx[4] = { 0,0,-1,1 }, dy[4] = { -1,1,0,0 };	//dx dyè¡¨ç¤ºä¸Šä¸‹å·¦å³ç§»åŠ¨æ—¶åæ ‡çš„å˜åŒ–
+int x2, y2;			//ç»ˆç‚¹åæ ‡
+bool flag = false;	//æ˜¯å¦èƒ½ç›¸è¿
 
-//ÅĞ¶ÏÎ»ÖÃÊÇ·ñºÏ·¨
+//åˆ¤æ–­ä½ç½®æ˜¯å¦åˆæ³•
 bool legal(int x, int y) {
 	return (x >= 0 && x < width&&y >= 0 && y < length);
 }
 
-//ËÑË÷º¯Êı
-//x y±íÊ¾Î»ÖÃ dir±íÊ¾·½Ïò cnt±íÊ¾¹ÕÍä´ÎÊı
+//æœç´¢å‡½æ•°
+//x yè¡¨ç¤ºä½ç½® dirè¡¨ç¤ºæ–¹å‘ cntè¡¨ç¤ºæ‹å¼¯æ¬¡æ•°
 void dfs(int x, int y, int dir, int cnt) {	
-	if (x == x2&&y == y2) {		//µ½´ïÖÕµã
+	if (x == x2&&y == y2) {		//åˆ°è¾¾ç»ˆç‚¹
 		cout << "TRUE\n";
 		flag = true;
 		return;
 	}
-	if (mat[x][y] != 0 || sig[x][y] == 1)	//Î»ÖÃ·Ç¿Õ»òÒÑ¾­ËÑË÷¹ı
+	if (mat[x][y] != 0 || sig[x][y] == 1)	//ä½ç½®éç©ºæˆ–å·²ç»æœç´¢è¿‡
 		return;
 
-	if (cnt == 2) {		//¹ÕÍäÁ½´Î£¬Ö»ÄÜÏòdir·½ÏòËÑË÷
+	if (cnt == 2) {		//æ‹å¼¯ä¸¤æ¬¡ï¼Œåªèƒ½å‘diræ–¹å‘æœç´¢
 		if (legal(x + dx[dir], y + dy[dir])) {
 			sig[x][y] = 1;
 			dfs(x + dx[dir], y + dy[dir], dir, cnt);
@@ -36,7 +33,7 @@ void dfs(int x, int y, int dir, int cnt) {
 		}
 	}
 	
-	if (cnt < 2) {		//¹ÕÍä²»µ½Á½´Î£¬¿ÉÏòËÄ¸ö·½ÏòËÑË÷
+	if (cnt < 2) {		//æ‹å¼¯ä¸åˆ°ä¸¤æ¬¡ï¼Œå¯å‘å››ä¸ªæ–¹å‘æœç´¢
 		for (int i = 0; i < 4; ++i) {
 			if (legal(x + dx[i], y + dy[i])) {
 				if (dir == i) {
@@ -54,7 +51,7 @@ void dfs(int x, int y, int dir, int cnt) {
 	}
 }
 
-//¶ÔÆğµãµÄËÑË÷
+//å¯¹èµ·ç‚¹çš„æœç´¢
 void trigger(int x, int y) {
 	for (int i = 0; i < 4; ++i) {
 		if (legal(x + dx[i], y + dy[i])) {
@@ -64,7 +61,7 @@ void trigger(int x, int y) {
 			if (flag) break;
 		}
 	}
-	if (!flag) {	//flagÎªfalse±íÊ¾²»ÄÜÏàÁ¬
+	if (!flag) {	//flagä¸ºfalseè¡¨ç¤ºä¸èƒ½ç›¸è¿
 		cout << "FALSE\n";
 	}
 }
@@ -103,11 +100,11 @@ int main()
 	y1--;
 	x2--;
 	y2--;
-	if (mat[x1][y1] != mat[x2][y2]) {	//ÈôÁ½×ø±êÍ¼°¸²»Í¬ÔòÏÔÈ»²»ÄÜÏàÁ¬
+	if (mat[x1][y1] != mat[x2][y2]) {	//è‹¥ä¸¤åæ ‡å›¾æ¡ˆä¸åŒåˆ™æ˜¾ç„¶ä¸èƒ½ç›¸è¿
 		cout << "FALSE\n";
 	}
 	else {
-		trigger(x1, y1);	//Á½×ø±êÍ¼°¸ÏàÍ¬¿ÉÒÔ¿ªÊ¼ËÑË÷
+		trigger(x1, y1);	//ä¸¤åæ ‡å›¾æ¡ˆç›¸åŒå¯ä»¥å¼€å§‹æœç´¢
 	}
 
 	for (i = 0; i < width; ++i) {
